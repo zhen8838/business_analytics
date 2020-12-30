@@ -14,7 +14,7 @@ if __name__ == "__main__":
   df_values = {'uid': [], 'company': [], 'title': [], 'tenure': []}
   for uid, (company, title, tenure) in enumerate(board_memberships.values):
     for company, title, tenure in zip(company, title, tenure):
-      df_values['uid'].append(uid)
+      df_values['uid'].append(uid + 1)
       df_values['company'].append(company)
       df_values['title'].append(title)
       df_values['tenure'].append(tenure)

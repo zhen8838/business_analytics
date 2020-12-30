@@ -16,7 +16,7 @@ if __name__ == "__main__":
   df_values = {'uid': [], 'title': [], 'company': [], 'tenure': []}
   for uid, (titles, companys, tenures) in enumerate(career_history.values):
     for title, company, tenure in zip(titles, companys, tenures):
-      df_values['uid'].append(uid)
+      df_values['uid'].append(uid + 1)
       df_values['title'].append(title)
       df_values['company'].append(company)
       df_values['tenure'].append(tenure)

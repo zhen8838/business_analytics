@@ -14,7 +14,7 @@ if __name__ == "__main__":
   df_values = {'uid': [], 'degree': [], 'institution': []}
   for uid, (degree, institution) in enumerate(education.values):
     for degree, institution in zip(degree, institution):
-      df_values['uid'].append(uid)
+      df_values['uid'].append(uid + 1)
       df_values['degree'].append(degree)
       df_values['institution'].append(institution)
 
