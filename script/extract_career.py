@@ -14,7 +14,7 @@ if __name__ == "__main__":
       lambda s: process_career_history(s, timepatten))
 
   tenurepattern = re.compile('(\d+\/\d+\/\d{4})|(\d{1,2}\/\d{1,4})|(PRESENT)|(FORMER)|(UNKNOWN)')
-  df_values = {'uid': [], 'title': [], 'company': [], 'tenure': []}
+  df_values = {'uid': [], 'title': [], 'company': [], 'start_tenure': [], 'end_tenure': []}
   for uid, (titles, companys, tenures) in enumerate(career_history.values):
     for invalidw in ['Publications', 'UNKNOWN FUTURE DATE', 'Awards']:
       if invalidw in tenures:
@@ -23,14 +23,15 @@ if __name__ == "__main__":
         companys = companys[:e]
         tenures = tenures[:e]
     sorted_idx, tenures = process_tenure(tenures, tenurepattern)
-    start_tenure, end_tenure = zip(*tenures)
+    start_tenures, end_tenures = zip(*tenures)
     titles = [titles[idx] for idx in sorted_idx]
     companys = [companys[idx] for idx in sorted_idx]
-    for title, company, tenure in zip(titles, companys, tenures):
+    for title, company, start_tenure, end_tenure in zip(titles, companys, start_tenures, end_tenures):
       df_values['uid'].append(uid + 1)
       df_values['title'].append(title)
       df_values['company'].append(company)
-      df_values['tenure'].append(tenure)
+      df_values['start_tenure'].append(start_tenure)
+      df_values['end_tenure'].append(end_tenure)
 
   dfcareer = pd.DataFrame(df_values)
   dfcareer.to_pickle('tmp/career_history_df.pkl')

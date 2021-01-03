@@ -7,7 +7,7 @@ if __name__ == "__main__":
   args = parser.parse_args()
   file_path = Path(args.file)
   df: pd.DataFrame = pd.read_pickle(file_path.as_posix())
-  # df = df.reset_index(-1)
+  df = df.reset_index(-1)
   #  预处理
   d = {
       'Chief Executive Officer': 'CEO',
@@ -45,4 +45,4 @@ if __name__ == "__main__":
   # pd.DataFrame(s).value_counts().to_csv('tmp/titles.csv')
 
   df[named_title_list] = titles
-  df.to_pickle(path=(file_path.parent / (file_path.stem + '_norm_title.pkl')).as_posix())
+  df.to_pickle(path=(file_path.parent / (file_path.stem + 'tile.pkl')).as_posix())
