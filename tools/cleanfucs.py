@@ -43,39 +43,37 @@ def process_career_history(stream: str, pattern: re.Pattern):
   return res
 
 
-def process_education(education):
+def process_education(stream: str, edu_pattern: re.Pattern):
   res = [[], []]
-  df2 = education.split('||')
-  # 清楚多余的表头或者表尾
-  if df2[0] == '':
-    df2.pop(0)
-  if df2[-1] == '':
-    df2.pop(-1)
-  # 判断是否为有用信息，如果不是则为null
-  if len(df2) > 0:
-    if df2[0] != 'degree':
-      df2.clear()
-      res[0].append(None)
-      res[1].append(None)
-      return res
-    if 'Most Popular' in df2:
-      # if 'institution' in df2:
-      s = df2.index('institution')
-      e = df2.index('Most Popular')
-      d = df2[s + 1:e]
-      for j in range(len(d)):
-        if j % 2 == 1:
-          res[1].append(d[j])
+  stream = stream.strip('||')
+  if edu_pattern.search(stream) == None:
+    l = stream.split('||')
+    if l[0] == 'degree':
+      s = 1
+      try:
+        e_pop = l.index('Most Popular')
+      except ValueError as e:
+        e_pop = len(l)
+      try:
+        e_pub = l.index('Publications')
+      except ValueError as e:
+        e_pub = len(l)
+      try:
+        e_vmore = l.index('View More')
+      except ValueError as e:
+        e_vmore = len(l)
+      e = min(e_pop, e_pub, e_vmore)
+      # print(s, e)
+      l = l[s + 1:e]
+      for i, string in enumerate(l):
+        if i % 2 == 0:
+          res[0].append(string)
         else:
-          res[0].append(d[j])
-    else:
-      s = df2.index('institution')
-      d = df2[s + 1:]
-      for j in range(len(d)):
-        if j % 2 == 1:
-          res[1].append(d[j])
-        else:
-          res[0].append(d[j])
+          res[1].append(string)
+  maxlen = max(1, *[len(r) for r in res])
+  for r in res:
+    while len(r) <= maxlen:
+      r.append(None)
   return res
 
 
