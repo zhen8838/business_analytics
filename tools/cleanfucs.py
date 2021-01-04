@@ -72,7 +72,7 @@ def process_education(stream: str, edu_pattern: re.Pattern):
           res[1].append(string)
   maxlen = max(1, *[len(r) for r in res])
   for r in res:
-    while len(r) <= maxlen:
+    while len(r) < maxlen:
       r.append(None)
   return res
 
