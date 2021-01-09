@@ -244,3 +244,40 @@ def process_tenure(ltimes: list, timepattern):
       fmtltimes[i][j] = fmtltimes[i][j].strftime('%m/%Y')
 
   return index, fmtltimes
+
+
+def maskfuc(series,columns):
+  new_series = series[series[columns] == 1]
+    # last=series.iloc[-1].start_tenure#第一次工作的时间
+  if len(new_series) > 0:
+    first = new_series.iloc[-1]  # 第一次成为CEO的时间
+    if first.start_tenure == '1/1/1900' or pd.isnull(first.start_tenure):
+      return None
+    else:
+      # first=new_series.iloc[-1]#第一次成为CEO的时间
+      last = series.iloc[-1].start_tenure  # 第一次工作的时间
+      # print(first.start_tenure,first)
+      if pd.isnull(last) or last == '1/1/1900':
+        return None
+      first_time = datetime.strptime(first.start_tenure, '%m/%d/%Y')
+      last_time = datetime.strptime(last, '%m/%d/%Y')
+      diff = (first_time - last_time).days
+      diff = float(diff / 365)
+      return diff
+  else:
+    return None
+
+def work(series,columns):
+  new_series = series[series[columns] == 1]
+  if len(new_series) == len(series):
+    return 0
+  else:
+    return 1
+    
+def institution(series):
+  new_series1 = series[series.top30 == 1]
+  new_series2 = series[series.top200 == 1]
+  if len(new_series1) > 0 or len(new_series2) > 0:
+    return 1
+  else:
+    return 0
